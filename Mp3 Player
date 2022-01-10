@@ -1,0 +1,37 @@
+@ECHO OFF
+COLOR A
+SETLOCAL ENABLEDELAYEDEXPANSION
+set /p p=Path Address :    
+set /a n=0
+for %%f in ("%p%\*.mp3") do (
+  set /a n+=1
+  call :count "%%f"
+)
+for /l %%g in (1,1,%n%) do (
+  call :rand
+)
+ENDLOCAL ENABLEDELAYEDEXPANSION
+goto :eof
+
+:count %1
+  set a[%n%]=%1
+  set b[%n%]=y
+goto :eof
+
+:rand
+  set /a "r=(%random%%%%n%)+1"
+  if "!b[%r%]!"=="n" goto :rand
+  rem  echo !a[%r%]!
+  call :logo
+  ffplay !a[%r%]! -autoexit -hide_banner
+  set b[%r%]=n
+goto :eof
+
+:logo
+ECHO  __  __ ____ _____    ____  _                                                                                         
+ECHO ^|  \/  ^|  _ \___ /   ^|  _ \^| ^| __ _ _   _  ___ _ __                                                                   
+ECHO ^| ^|\/^| ^| ^|_^) ^|^|_ \   ^| ^|_^) ^| ^|/ _` ^| ^| ^| ^|/ _ \ ^'__^|                                                                  
+ECHO ^| ^|  ^| ^|  __/___^) ^|  ^|  __/^| ^| ^(_^| ^| ^|_^| ^|  __/ ^|                                                                     
+ECHO ^|_^|  ^|_^|_^|  ^|____/   ^|_^|   ^|_^|\__,_^|\__, ^|\___^|_^|                                                                     
+ECHO                                     ^|___/                                                                             
+echo.                                                    
